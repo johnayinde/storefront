@@ -37,6 +37,12 @@ class Customer(models.Model):
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=255)
     birth_date = models.DateField(null=True)   
+    
+    class Meta:
+        db_table = 'store_customers'
+        indixes = [
+            models.Index(fields=['first_name','last_name'])
+        ]
      
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
@@ -61,6 +67,7 @@ class OrderItem(models.Model):
 class Address(models.Model):
         street = models.CharField(max_length=255)
         city = models.CharField(max_length=255)
+        zip = models.CharField( max_length=6 , null=True)
         customer = models.OneToOneField(Customer, primary_key=True, on_delete=models.CASCADE)
         
 
