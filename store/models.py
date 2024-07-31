@@ -11,6 +11,18 @@ class Promotion(models.Model):
     discount= models.FloatField()
     
 class Product(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField()
+    unit_price = models.DecimalField(max_digits=6 , decimal_places=2)
+    description = models.TextField(null=True)
+    inventory = models.IntegerField()
+    last_update = models.DateTimeField(auto_now=True )
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
+    promotions = models.ManyToManyField(Promotion )
+    
+    
+    
+class Customer(models.Model):
     MEMBERSHIP_BRONZE='B'
     MEMBERSHIP_SLIVER='S'
     MEMBERSHIP_GOLD='G'
@@ -20,29 +32,19 @@ class Product(models.Model):
         (MEMBERSHIP_SLIVER,'Sliver'),
         (MEMBERSHIP_GOLD,'Gold'),
     ]
-    title = models.CharField(max_length=255)
-    price = models.DecimalField(max_digits=6 , decimal_places=2)
-    inventory = models.IntegerField()
-    last_update = models.DateTimeField(auto_now=True )
-    membership = models.CharField(max_length=1,choices=MEMBERSHIP_CHOICES,default=MEMBERSHIP_BRONZE)
-    
-    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
-    promotions = models.ManyToManyField(Promotion )
-    
-    
-    
-class Customer(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=255)
-    birth_date = models.DateField(null=True)   
+    birth_date = models.DateField(null=True)
+    membership = models.CharField(max_length=1,choices=MEMBERSHIP_CHOICES,default=MEMBERSHIP_BRONZE)
+       
     
-    class Meta:
-        db_table = 'store_customers'
-        indexes = [
-            models.Index(fields=['first_name','last_name'])
-        ]
+    # class Meta:
+    #     db_table = 'store_customers'
+    #     indexes = [
+    #         models.Index(fields=['first_name','last_name'])
+    #     ]
      
 class Order(models.Model):
     PAYMENT_STATUS_PENDING = 'P'
