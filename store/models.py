@@ -17,6 +17,9 @@ class Promotion(models.Model):
     description = models.TextField()
     discount= models.FloatField()
     
+    def __str__(self) -> str:
+        return f'{self.discount}'
+    
 class Product(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()

@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.utils.html import format_html
 from django.urls import reverse
 from django.utils.http import urlencode
-from .models import Customer, Order, OrderItem, Product,Collection
+from .models import Customer, Order, OrderItem, Product,Collection, Promotion
 # Register your models here.
 
 
@@ -22,18 +22,19 @@ class InventoryCustomFilter(admin.SimpleListFilter):
     def queryset(self, request: Any, queryset: QuerySet[Any]) -> QuerySet[Any] | None:
         if self.value() == '<10':
             return queryset.filter(inventory__lt = 10)
-        
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    autocomplete_fields = ['collection']
-    search_fields =['order']
+    autocomplete_fields = ['collection','promotions']
+    search_fields =['title']
     prepopulated_fields ={
         'slug':['title']
     }
     actions =[ 'clear_inventory']
-    list_display = ['title', 'unit_price','inventory','inventory_status','collection_title',]
+    list_display = ['id','title', 'unit_price','inventory','inventory_status','collection_title',]
     list_editable = ['unit_price','inventory']
-    list_per_page = 10
+    list_per_page = 30
     list_select_related= ['collection']
     list_filter = ['collection','last_update',InventoryCustomFilter]
     
@@ -74,7 +75,6 @@ class CustomerAdmin(admin.ModelAdmin):
         )
     
     
-    
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     autocomplete_fields =['product']
@@ -82,7 +82,6 @@ class OrderItemInline(admin.TabularInline):
     # min_num =1
     max_num=10
     
-     
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines=[OrderItemInline]
@@ -112,3 +111,6 @@ class CollectionAdmin(admin.ModelAdmin):
             product_count=Count('product')
         )
         
+@admin.register(Promotion)
+class PromotionAdmin(admin.ModelAdmin):
+    search_fields =['discount']

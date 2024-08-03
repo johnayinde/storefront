@@ -7,6 +7,8 @@ from store.models import Product,Customer,Collection,Order,OrderItem
 
 
 def playground(request):
+    pp = Product.objects.filter(id__in=[1041]).delete()
+    print(pp)
     # q_set = Product.objects.filter(pk=0).first() # get the first value from the filter qSet
     # q_set = Product.objects.filter(unit_price = 20) # get all products price that are  20
     # q_set = Product.objects.filter(unit_price__gt = 20) # get all products price that are more then 20 
@@ -45,7 +47,5 @@ def playground(request):
     # prod = Product.objects.values('id','title','unit_price','collection__title')[0:10] # select id,title,price,and related field
     ord2 = Product.objects.filter(id__in=OrderItem.objects.values('product_id').distinct()).order_by('title')
     
-    produc = Product()
-    produc.t 
     
     return render(request, 'hello.html', {'products': list(ord2)}) 
