@@ -102,8 +102,7 @@ class CollectionAdmin(admin.ModelAdmin):
             + urlencode({
                 'collection__id': str(collection.id)
             }))
-        print(url)
-        return format_html('<a href="{}">{}</a>',url,collection.product_count)
+        return format_html('<a href="{}">{} products</a>',url,collection.product_count)
          
     
     def get_queryset(self, request: HttpRequest):
