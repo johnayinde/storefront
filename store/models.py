@@ -33,6 +33,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
+    # set related name to products
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
     promotions = models.ManyToManyField(Promotion, blank=True)
 
