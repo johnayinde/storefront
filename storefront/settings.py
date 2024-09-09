@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'playground',
     'debug_toolbar',
     'tags',
@@ -57,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware", #Browser Debugger
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # Browser Debugger
 ]
 
 ROOT_URLCONF = 'storefront.urls'
@@ -133,6 +134,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FRAMEWORK ={ # show all decimal strings --> interger
-    'COERCE_DECIMAL_TO_STRING':False 
+REST_FRAMEWORK = {  # show all decimal strings --> interger
+    'COERCE_DECIMAL_TO_STRING': False,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'DEFAULT_PA GINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 10
 }
