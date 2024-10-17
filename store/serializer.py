@@ -1,6 +1,6 @@
 from decimal import Decimal
 from rest_framework import serializers
-from store.models import Product, Collection
+from store.models import Cart, Product, Collection, Review
 
 
 class CollectionSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id', 'title', 'price', 'slug', 'inventory',
-                  'description', 'price_with_tax', 'collection']
+                  'description', 'price_with_tax', 'collection', 'last_update']
 
     # def create(self, validated_data): # override cretion of product
     #     #add new fields to it
@@ -43,3 +43,22 @@ class ProductSerializer(serializers.ModelSerializer):
     #     instance.unit_price = validated_data.get('unit_price')
     #     instance.save()
     #     return instance
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'name', 'description',  'date']
+
+    def create(self, validated_data):
+        product_id = self.context['product_id']
+        return Review.objects.create(product_id=product_id, **validated_data)
+
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['id']
+
+    # id = serializers.UUIDField(read_only)
+    id = serializers.UUIDField(read_only=True)
